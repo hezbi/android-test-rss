@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RssFeed</string>
+    <string name="banner_feed">Banner Feed</string>
+    <string name="dummy_feed_title">Kemerdekaan Indonesia</string>
+    <string name="dummy_feed_time">Wed, 29 January 2020</string>
+    <string name="dialog_title">Warning!</string>
+    <string name="dialog_message">Please input antara news rss url</string>
+    <string name="dialog_message_empty">url cannot empty</string>
+    <string name="submit">Submit</string>
+    <string name="url_feed">https://www.antaranews.com/rss/</string>
+</resources>
