@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.islamistudio.rssfeed.R;
 import com.islamistudio.rssfeed.data.source.remote.entity.Item;
 
@@ -48,17 +49,37 @@ public class FeedListAdapter extends RecyclerView.Adapter<FeedListAdapter.FeedLi
         final ImageView imvBanner;
         final TextView tvTitle;
         final TextView tvTime;
+        final TextView tvDesc;
 
-        public FeedListViewHolder(View itemView) {
+        FeedListViewHolder(View itemView) {
             super(itemView);
             this.imvBanner = itemView.findViewById(R.id.imv_feed_banner);
             this.tvTitle = itemView.findViewById(R.id.tv_feed_title);
             this.tvTime = itemView.findViewById(R.id.tv_feed_time);
+            this.tvDesc = itemView.findViewById(R.id.tv_feed_desc);
         }
 
         void bind(Item item) {
             tvTitle.setText(item.getTitle());
             tvTime.setText(item.getPubDate());
+
+            int startIndex = item.getDescription().indexOf("<");
+            int endIndex = item.getDescription().indexOf(">");
+            String html = item.getDescription().substring(startIndex, endIndex + 1);
+            String desc = item.getDescription().replace(html, "");
+
+            int htmlStartIndex = html.indexOf("http");
+            int htmlEndIndex = html.indexOf("\" align");
+            String urlThumbnail = html.substring(htmlStartIndex, htmlEndIndex);
+
+            tvDesc.setText(desc);
+            Glide.with(itemView.getContext())
+                    .load(urlThumbnail)
+                    .into(imvBanner);
+
+            //Pattern p = Pattern.compile("\"([^\"]*)\"");
+            //Matcher m = p.matcher(item)
+
         }
     }
 }

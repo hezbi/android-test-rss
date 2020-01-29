@@ -1,6 +1,7 @@
 package com.islamistudio.rssfeed.ui.list;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +12,7 @@ import com.islamistudio.rssfeed.R;
 import com.islamistudio.rssfeed.data.source.remote.entity.Item;
 import com.islamistudio.rssfeed.ui.base.BaseActivity;
 import com.islamistudio.rssfeed.ui.base.RssFeedPresenter;
+import com.islamistudio.rssfeed.utils.DialogView;
 import com.islamistudio.rssfeed.utils.ProgressView;
 
 import java.util.List;
@@ -19,7 +21,6 @@ public class FeedListActivity extends BaseActivity implements FeedListContract.F
 
     private FeedListPresenter presenter;
     private ProgressView progressView;
-    private RecyclerView rvItem;
 
     public static final String EXTRA_FEED = "extra_feed";
 
@@ -39,9 +40,10 @@ public class FeedListActivity extends BaseActivity implements FeedListContract.F
     protected void initView() {
 
         initToolbar();
-
         presenter = (FeedListPresenter) createPresenter();
-        presenter.getFeedList();
+        progressView = findViewById(R.id.progress_view);
+
+        onLoadFeedList();
     }
 
     @Override
@@ -50,6 +52,7 @@ public class FeedListActivity extends BaseActivity implements FeedListContract.F
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getIntent().getStringExtra(EXTRA_FEED));
             toolbar.setNavigationOnClickListener(v -> onBackPressed());
         }
     }
@@ -72,8 +75,21 @@ public class FeedListActivity extends BaseActivity implements FeedListContract.F
     }
 
     @Override
-    public void onErrorFeedListLoaded() {
+    public void onErrorFeedListLoaded(String message) {
+        progressView.hide();
+        DialogInterface.OnClickListener actionListener = (dialog, which) -> finish();
+        DialogView.show(FeedListActivity.this, R.string.dialog_title_warning, message, actionListener);
+    }
 
+    @Override
+    public void onSuccessFeedListLoaded() {
+        progressView.hide();
+    }
+
+    private void onLoadFeedList() {
+        progressView.show(R.string.progress_get_data);
+        String url = getIntent().getStringExtra(EXTRA_FEED);
+        presenter.getFeedList(url);
     }
 
     private void onShowItemList(List<Item> itemList) {

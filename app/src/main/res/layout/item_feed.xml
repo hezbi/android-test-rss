@@ -15,16 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imv_feed_banner"
-            android:layout_width="match_parent"
-            android:layout_height="128dp"
-            android:contentDescription="@string/banner_feed"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="@android:color/darker_gray" />
-
         <TextView
             android:id="@+id/tv_feed_title"
             style="@style/TextAppearance.AppCompat.Title"
@@ -35,7 +25,7 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imv_feed_banner"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/dummy_feed_title" />
 
         <TextView
@@ -43,14 +33,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_feed_title"
+            tools:text="@string/dummy_feed_time" />
+
+        <ImageView
+            android:id="@+id/imv_feed_banner"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/banner_feed"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_feed_time"
+            tools:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tv_feed_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_feed_title"
-            tools:text="@string/dummy_feed_time" />
+            app:layout_constraintTop_toBottomOf="@+id/imv_feed_banner" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

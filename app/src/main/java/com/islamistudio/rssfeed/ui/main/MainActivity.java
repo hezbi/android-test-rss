@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.islamistudio.rssfeed.R;
 import com.islamistudio.rssfeed.ui.list.FeedListActivity;
-import com.islamistudio.rssfeed.utils.Configure;
 import com.islamistudio.rssfeed.utils.DialogView;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,11 +39,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void submitUrl(String url) {
         if (url.isEmpty()) {
-            DialogView.show(this, R.string.dialog_title, R.string.dialog_message_empty);
-        } else if (!url.contains(Configure.BASE_URL)) {
-            DialogView.show(this, R.string.dialog_title, R.string.dialog_message);
+            DialogView.show(this, R.string.dialog_title_warning, R.string.dialog_message_empty);
         } else {
             FeedListActivity.open(MainActivity.this, url);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        edtUrl.setText("");
     }
 }

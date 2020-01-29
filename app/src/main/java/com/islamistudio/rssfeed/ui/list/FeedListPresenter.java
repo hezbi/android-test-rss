@@ -1,20 +1,18 @@
 package com.islamistudio.rssfeed.ui.list;
 
-import android.util.Log;
-
 import com.islamistudio.rssfeed.data.source.remote.Api;
 import com.islamistudio.rssfeed.data.source.remote.entity.Item;
 import com.islamistudio.rssfeed.data.source.remote.response.RssResponse;
 import com.islamistudio.rssfeed.ui.base.RssFeedPresenter;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 public class FeedListPresenter extends RssFeedPresenter<FeedListContract.FeedListView> implements FeedListContract.FeedListPresenter {
@@ -43,27 +41,39 @@ public class FeedListPresenter extends RssFeedPresenter<FeedListContract.FeedLis
     }
 
     @Override
-    public void getFeedList() {
+    public void getFeedList(String ext) {
 
         Retrofit retrofit = createRetrofit();
         if (retrofit != null) {
             Api api = retrofit.create(Api.class);
-            Call<RssResponse> callXML = api.getSoccerXML();
-            callXML.enqueue(new Callback<RssResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<RssResponse> call, @NotNull Response<RssResponse> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            onFeedListResponse(response.body());
-                        }
-                    }
-                }
+            Observable<RssResponse> observable = api.getSoccerXML(ext);
+            observable.subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<RssResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                @Override
-                public void onFailure(@NotNull Call<RssResponse> call, @NotNull Throwable t) {
-                    Log.d("TAG", "onFailure: ");
-                }
-            });
+                        }
+
+                        @Override
+                        public void onNext(RssResponse rssResponse) {
+                            onFeedListResponse(rssResponse);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if (e instanceof java.net.UnknownHostException || e instanceof java.net.ConnectException || e instanceof java.net.SocketTimeoutException) {
+                                view.onErrorFeedListLoaded("Tidak ada koneksi intenet");
+                            } else {
+                                view.onErrorFeedListLoaded(e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            view.onSuccessFeedListLoaded();
+                        }
+                    });
         }
 
     }

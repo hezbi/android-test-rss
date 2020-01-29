@@ -2,12 +2,13 @@ package com.islamistudio.rssfeed.data.source.remote;
 
 import com.islamistudio.rssfeed.data.source.remote.response.RssResponse;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface Api {
 
-    @GET("sepakbola")
-    Call<RssResponse> getSoccerXML();
+    @GET("{id}")
+    Observable<RssResponse> getSoccerXML(@Path("id") String ext);
 
 }

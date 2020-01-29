@@ -13,7 +13,9 @@ public interface FeedListContract {
 
         void onFeedListLoaded(List<Item> itemList);
 
-        void onErrorFeedListLoaded();
+        void onErrorFeedListLoaded(String message);
+
+        void onSuccessFeedListLoaded();
 
     }
 
@@ -21,7 +23,7 @@ public interface FeedListContract {
 
         void onFeedListResponse(RssResponse response);
 
-        void getFeedList();
+        void getFeedList(String ext);
 
     }
 
