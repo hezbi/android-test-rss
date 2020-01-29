@@ -10,4 +10,6 @@
     <string name="progress_get_data">Please wait, getting data &#8230;</string>
     <string name="submit">Submit</string>
     <string name="url_feed">https://www.antaranews.com/rss/</string>
+    <string name="hint">Input news category. Ex: metro</string>
+    <string name="antara_news">Antara News</string>
 </resources>

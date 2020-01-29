@@ -7,6 +7,7 @@ import android.content.Intent;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.islamistudio.rssfeed.R;
 import com.islamistudio.rssfeed.data.source.remote.entity.Item;
@@ -21,6 +22,7 @@ public class FeedListActivity extends BaseActivity implements FeedListContract.F
 
     private FeedListPresenter presenter;
     private ProgressView progressView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static final String EXTRA_FEED = "extra_feed";
 
@@ -42,7 +44,17 @@ public class FeedListActivity extends BaseActivity implements FeedListContract.F
         initToolbar();
         presenter = (FeedListPresenter) createPresenter();
         progressView = findViewById(R.id.progress_view);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            onLoadFeedList();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         onLoadFeedList();
     }
 
